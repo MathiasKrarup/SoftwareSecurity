@@ -6,7 +6,34 @@
         xmlns:local="clr-namespace:SoftwareSecurity"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBox x:Name="SearchTextBox" Width="200" KeyUp="SearchTextBox_KeyUp"/>
+            <Button Content="Add New" Width="100" Margin="10,0,0,0" Click="AddNewCredential_Click"/>
+            <Button Content="Generate Password" Width="130" Margin="10,0,0,0" Click="GeneratePassword_Click"/>
+        </StackPanel>
+        
+        <DataGrid x:Name="CredentialDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Website/App" Binding="{Binding Website}" Width="*"/>
+                <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="*"/>
+                <DataGridTextColumn Header="Password" Binding="{Binding Password}" Width="*"/>
+                <DataGridTemplateColumn Header="Actions" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="Edit" Width="50" Margin="5,0" Click="EditCredential_Click"/>
+                                <Button Content="Delete" Width="60" Margin="5,0" Click="DeleteCredential_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

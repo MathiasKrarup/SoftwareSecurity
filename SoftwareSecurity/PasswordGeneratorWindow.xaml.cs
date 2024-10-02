@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
-using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,48 +11,39 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace SoftwareSecurity
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PasswordGeneratorWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PasswordGeneratorWindow : Window
     {
-        public MainWindow()
+        public PasswordGeneratorWindow()
         {
             InitializeComponent();
         }
 
-        private void LoadCredentials()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void AddNewCredential_Click()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void EditCredential_Click()
+        private void GenerateButton_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
 
         }
 
-        private void DeleteCredential_Click()
+        private string GeneratePassword()
         {
             throw new NotImplementedException();
+
         }
 
-        private void GeneratePassword_Click()
+        private void CopyButton_Click(object sender, RoutedEventArgs e)
         {
             throw new NotImplementedException();
+
         }
 
-        private void SearchTextBox_KeyUp()
+        private void CloseButton_Click()
         {
             throw new NotImplementedException();
         }
