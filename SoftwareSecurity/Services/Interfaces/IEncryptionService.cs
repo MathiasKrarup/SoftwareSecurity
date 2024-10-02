@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SoftwareSecurity.Services
+namespace SoftwareSecurity.Services.Interfaces
 {
-    public class EncryptionService
+    public interface IEncryptionService
     {
 
     }
