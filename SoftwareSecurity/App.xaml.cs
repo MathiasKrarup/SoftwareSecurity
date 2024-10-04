@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SoftwareSecurity.Repository;
+using SoftwareSecurity.Repository.Interfaces;
+using SoftwareSecurity.Services.Interfaces;
+using SoftwareSecurity.Services;
 using System.Configuration;
 using System.Data;
 
@@ -20,7 +23,6 @@ namespace SoftwareSecurity
 
         public App()
         {
-            // Set up configuration
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -36,6 +38,15 @@ namespace SoftwareSecurity
                 options.UseSqlServer(connectionString));
 
 
+            // Repos
+            services.AddScoped<IMasterPasswordRepository, MasterPasswordRepository>();
+            services.AddScoped<ICredentialRepository, CredentialRepository>();
+
+            // Services
+            services.AddScoped<IMasterPasswordService, MasterPasswordService>();
+            services.AddScoped<ICredentialService, CredentialService>();
+
+            // viewmodels
             services.AddTransient<MainWindow>();
         }
 
