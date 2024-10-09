@@ -9,7 +9,6 @@ namespace SoftwareSecurity.Model
 {
     public class Credential
     {
-        [Key]
         public int Id { get; set; }
 
         public string? Website {  get; set; }

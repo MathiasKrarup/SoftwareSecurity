@@ -1,4 +1,5 @@
-﻿using SoftwareSecurity.Model;
+﻿using SoftwareSecurity.Helpers;
+using SoftwareSecurity.Model;
 using SoftwareSecurity.Repository.Interfaces;
 using SoftwareSecurity.Services.Interfaces;
 using System;
@@ -25,17 +26,21 @@ namespace SoftwareSecurity.Services
 
         public async Task SetMasterPasswordAsync(string password)
         {
-            byte[] salt = PasswordHelper.GenerateSalt();
-            string hashedPassword = await PasswordHelper.HashPassword(password, salt);
+            byte[] authSalt = PasswordHelper.GenerateSalt();
+            string hashedPassword = await PasswordHelper.HashPassword(password, authSalt);
+
+            byte[] keySalt = PasswordHelper.GenerateSalt();
 
             var masterPassword = new MasterPassword
             {
                 Password = hashedPassword,
-                Salt = Convert.ToBase64String(salt)
+                AuthSalt = Convert.ToBase64String(authSalt),
+                KeySalt = Convert.ToBase64String(keySalt)
             };
 
             await _MasterPwRepository.AddMasterPasswordAsync(masterPassword);
         }
+
 
         public async Task<bool> ValidateMasterPasswordAsync(string password)
         {
@@ -45,9 +50,10 @@ namespace SoftwareSecurity.Services
                 return false;
             }
 
-            byte[] saltBytes = Convert.FromBase64String(masterPassword.Salt);
-            return await PasswordHelper.VerifyPassword(password, masterPassword.Password, saltBytes);
-
+            byte[] authSalt = Convert.FromBase64String(masterPassword.AuthSalt);
+            return await PasswordHelper.VerifyPassword(password, masterPassword.Password, authSalt);
         }
+
+
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SoftwareSecurity.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,34 +21,43 @@ namespace SoftwareSecurity
     /// </summary>
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        private readonly IMasterPasswordService _masterPasswordService;
+        private readonly IEncryptionService _encryptionService;
+        private readonly IServiceProvider _serviceProvider;
+
+        public LoginWindow(
+            IMasterPasswordService masterPasswordService,
+            IEncryptionService encryptionService,
+            IServiceProvider serviceProvider)
         {
             InitializeComponent();
+            _masterPasswordService = masterPasswordService;
+            _encryptionService = encryptionService;
+            _serviceProvider = serviceProvider;
             CheckFirstTimeSetup();
         }
 
-        private void CheckFirstTimeSetup()
+        // Used for first time setup
+        private async void CheckFirstTimeSetup()
         {
-            if (!MasterPasswordExists())
+            if (!await _masterPasswordService.IsMasterPasswordSetAsync())
             {
-                var setupWindow = new SetupMasterPasswordWindow();
-                setupWindow.ShowDialog();
+                var setupWindow = new SetupMasterPasswordWindow(_masterPasswordService);
+                setupWindow.Show();
+                this.Close();
             }
         }
 
-        private bool MasterPasswordExists()
-        {
-            // Implement logic to check if set later
-            return false; // Placeholder change later
-        }
 
-        private void UnlockButton_Click(object sender, RoutedEventArgs e)
+        private async void UnlockButton_Click(object sender, RoutedEventArgs e)
         {
             var enteredPassword = MasterPasswordBox.Password;
 
-            if (ValidateMasterPassword(enteredPassword))
+            if (await _masterPasswordService.ValidateMasterPasswordAsync(enteredPassword))
             {
-                MainWindow mainWindow = new MainWindow();
+                await _encryptionService.InitializeAsync(enteredPassword);
+
+                var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
                 mainWindow.Show();
                 this.Close();
             }
@@ -56,10 +67,7 @@ namespace SoftwareSecurity
             }
         }
 
-        private bool ValidateMasterPassword(string password)
-        {
-            return password == "password123"; //Placeholder change later
-        }
+
     }
 
 }

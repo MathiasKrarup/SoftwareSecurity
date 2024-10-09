@@ -13,10 +13,8 @@ namespace SoftwareSecurity.Repository
         public PasswordManagerContext(DbContextOptions<PasswordManagerContext> options)
            : base(options)
         {
-            Database.EnsureCreated();
         }
 
-        public DbSet<Credential> Credentials { get; set; }
         public DbSet<MasterPassword> MasterPasswords { get; set; }
     }
 }

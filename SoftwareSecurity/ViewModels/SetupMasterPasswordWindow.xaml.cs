@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SoftwareSecurity.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,12 +20,15 @@ namespace SoftwareSecurity
     /// </summary>
     public partial class SetupMasterPasswordWindow : Window
     {
-        public SetupMasterPasswordWindow()
+        private readonly IMasterPasswordService _masterPasswordService;
+
+        public SetupMasterPasswordWindow(IMasterPasswordService masterPasswordService)
         {
             InitializeComponent();
+            _masterPasswordService = masterPasswordService;
         }
 
-        private void SetPasswordButton_Click(object sender, RoutedEventArgs e)
+        private async void SetPasswordButton_Click(object sender, RoutedEventArgs e)
         {
             var password = MasterPasswordBox.Password;
             var confirmPassword = ConfirmPasswordBox.Password;
@@ -42,18 +46,9 @@ namespace SoftwareSecurity
             }
 
             
-            SaveMasterPassword(password);
+            await _masterPasswordService.SetMasterPasswordAsync(password);
 
             this.Close();
-        }
-
-        /// <summary>
-        /// Implement a secure way of storing the password
-        /// </summary>
-        /// <param name="password"></param>
-        private void SaveMasterPassword(string password)
-        {
-            throw new NotImplementedException();
         }
 
     }

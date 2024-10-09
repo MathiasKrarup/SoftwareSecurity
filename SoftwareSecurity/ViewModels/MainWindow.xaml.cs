@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SoftwareSecurity.Services.Interfaces;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Text;
 using System.Windows;
@@ -18,9 +20,14 @@ namespace SoftwareSecurity
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly ICredentialService _credentialService;
+
+        public MainWindow(ICredentialService credentialService)
         {
             InitializeComponent();
+            _credentialService = credentialService;
+
+            LoadCredentials();
         }
 
         private void LoadCredentials()
