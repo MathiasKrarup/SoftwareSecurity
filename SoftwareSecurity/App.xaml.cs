@@ -66,7 +66,9 @@ namespace SoftwareSecurity
             services.AddTransient<SetupMasterPasswordWindow>(provider =>
             {
                 return new SetupMasterPasswordWindow(
-                    provider.GetRequiredService<IMasterPasswordService>()
+                    provider.GetRequiredService<IMasterPasswordService>(),
+                    provider.GetRequiredService<IEncryptionService>(),
+                    provider
                 );
             });
 

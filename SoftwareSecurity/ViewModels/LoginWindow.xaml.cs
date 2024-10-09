@@ -42,11 +42,12 @@ namespace SoftwareSecurity
         {
             if (!await _masterPasswordService.IsMasterPasswordSetAsync())
             {
-                var setupWindow = new SetupMasterPasswordWindow(_masterPasswordService);
+                var setupWindow = _serviceProvider.GetRequiredService<SetupMasterPasswordWindow>();
                 setupWindow.Show();
                 this.Close();
             }
         }
+
 
 
         private async void UnlockButton_Click(object sender, RoutedEventArgs e)

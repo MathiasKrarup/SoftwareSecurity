@@ -1,4 +1,5 @@
-﻿using SoftwareSecurity.Services.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SoftwareSecurity.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,34 +22,52 @@ namespace SoftwareSecurity
     public partial class SetupMasterPasswordWindow : Window
     {
         private readonly IMasterPasswordService _masterPasswordService;
+        private readonly IEncryptionService _encryptionService;
+        private readonly IServiceProvider _serviceProvider;
 
-        public SetupMasterPasswordWindow(IMasterPasswordService masterPasswordService)
+
+        public SetupMasterPasswordWindow(
+                   IMasterPasswordService masterPasswordService,
+                   IEncryptionService encryptionService,
+                   IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _masterPasswordService = masterPasswordService;
+            _encryptionService = encryptionService;
+            _serviceProvider = serviceProvider;
         }
 
         private async void SetPasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            var password = MasterPasswordBox.Password;
+            var newPassword = NewPasswordBox.Password;
             var confirmPassword = ConfirmPasswordBox.Password;
 
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(newPassword))
             {
                 ErrorTextBlock.Text = "Password cannot be empty.";
                 return;
             }
 
-            if (password != confirmPassword)
+            if (newPassword != confirmPassword)
             {
                 ErrorTextBlock.Text = "Passwords do not match.";
                 return;
             }
 
-            
-            await _masterPasswordService.SetMasterPasswordAsync(password);
+            try
+            {
+                await _masterPasswordService.SetMasterPasswordAsync(newPassword);
 
-            this.Close();
+                await _encryptionService.InitializeAsync(newPassword);
+
+                var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+                loginWindow.Show();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                ErrorTextBlock.Text = "An error occurred while setting the master password.";
+            }
         }
 
     }

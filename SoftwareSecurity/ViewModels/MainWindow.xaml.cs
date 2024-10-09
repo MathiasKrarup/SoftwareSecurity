@@ -27,7 +27,6 @@ namespace SoftwareSecurity
             InitializeComponent();
             _credentialService = credentialService;
 
-            LoadCredentials();
         }
 
         private void LoadCredentials()
