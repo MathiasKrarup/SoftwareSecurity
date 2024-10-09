@@ -61,7 +61,6 @@ namespace SoftwareSecurity.Services
 
             byte[] encryptedBytes = Convert.FromBase64String(encryptedData);
 
-            // Write IV + encrypted data to file
             using (var fs = new FileStream(_credentialFilePath, FileMode.Create))
             {
                 await fs.WriteAsync(iv, 0, iv.Length);

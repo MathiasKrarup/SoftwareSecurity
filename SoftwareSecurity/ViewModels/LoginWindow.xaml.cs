@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SoftwareSecurity.Services.Interfaces;
+using SoftwareSecurity.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +65,7 @@ namespace SoftwareSecurity
             }
             else
             {
-                ErrorTextBlock.Text = "Incorrect master password. Please try again.";
+                ErrorTextBlock.Text = "Incorrect master password";
             }
         }
 

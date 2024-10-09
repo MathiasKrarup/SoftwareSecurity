@@ -5,6 +5,7 @@ using SoftwareSecurity.Repository;
 using SoftwareSecurity.Repository.Interfaces;
 using SoftwareSecurity.Services;
 using SoftwareSecurity.Services.Interfaces;
+using SoftwareSecurity.ViewModels;
 using System;
 using System.IO;
 using System.Windows;
@@ -75,9 +76,18 @@ namespace SoftwareSecurity
             services.AddTransient<MainWindow>(provider =>
             {
                 return new MainWindow(
+                    provider.GetRequiredService<ICredentialService>(),
+                    provider
+                );
+            });
+
+            services.AddTransient<AddCredentialView>(provider =>
+            {
+                return new AddCredentialView(
                     provider.GetRequiredService<ICredentialService>()
                 );
             });
+
         }
 
         private void ApplyMigrations()
