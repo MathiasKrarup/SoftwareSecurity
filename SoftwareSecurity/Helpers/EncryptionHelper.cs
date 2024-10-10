@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Helpers
 {
+    /// <summary>
+    /// Provides helper methods for encryption and decryption using AES
+    /// </summary>
     public class EncryptionHelper
     {
 

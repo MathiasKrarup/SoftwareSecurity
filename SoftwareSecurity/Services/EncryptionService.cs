@@ -9,10 +9,14 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Services
 {
+    /// <summary>
+    /// Service responsible for deriving the encryption from the master pw
+    /// </summary>
     public class EncryptionService : IEncryptionService
     {
         private readonly IMasterPasswordRepository _masterPasswordRepository;
         private byte[] _key;
+
 
         public byte[] Key => _key;
 
@@ -22,7 +26,12 @@ namespace SoftwareSecurity.Services
             _masterPasswordRepository = masterPasswordRepository;
         }
 
-
+        /// <summary>
+        /// Derives the encryption key from the masterpw
+        /// </summary>
+        /// <param name="masterPassword"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task InitializeAsync(string masterPassword)
         {
             var masterPasswordRecord = await _masterPasswordRepository.GetMasterPasswordAsync();

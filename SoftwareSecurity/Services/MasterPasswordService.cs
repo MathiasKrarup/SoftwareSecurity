@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Services
 {
+    /// <summary>
+    /// Service for managing the masterpw
+    /// </summary>
     public class MasterPasswordService : IMasterPasswordService
     {
         private readonly IMasterPasswordRepository _MasterPwRepository;
@@ -18,12 +21,22 @@ namespace SoftwareSecurity.Services
         {
             _MasterPwRepository = repository;
         }
+
+        /// <summary>
+        /// Checks if the master pw is set
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> IsMasterPasswordSetAsync()
         {
             var masterPassword = await _MasterPwRepository.GetMasterPasswordAsync();
             return masterPassword != null;
         }
 
+        /// <summary>
+        /// Sets the master password by hashing it and storing the hash and salt
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task SetMasterPasswordAsync(string password)
         {
             byte[] authSalt = PasswordHelper.GenerateSalt();
@@ -41,7 +54,11 @@ namespace SoftwareSecurity.Services
             await _MasterPwRepository.AddMasterPasswordAsync(masterPassword);
         }
 
-
+        /// <summary>
+        /// Validates the entered master password agaisnt the stored hash
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task<bool> ValidateMasterPasswordAsync(string password)
         {
             var masterPassword = await _MasterPwRepository.GetMasterPasswordAsync();

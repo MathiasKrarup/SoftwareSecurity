@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Helpers
 {
+    /// <summary>
+    /// Provides helper methods for password hashing and key derivation
+    /// </summary>
     public class PasswordHelper
     {
+        /// <summary>
+        /// Generates a secure random salt
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
         public static byte[] GenerateSalt(int size = 16)
         {
             using var rng = RandomNumberGenerator.Create();
@@ -18,21 +26,34 @@ namespace SoftwareSecurity.Helpers
             return salt;
         }
 
+        /// <summary>
+        /// Hashes a password using Argon2id
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
         public static async Task<string> HashPassword(string password, byte[] salt)
         {
             var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
             {
                 Salt = salt,
 
-                DegreeOfParallelism = 8,
+                DegreeOfParallelism = 1,
                 Iterations = 4,
-                MemorySize = 1024 * 64
+                MemorySize = 9216
             };
 
             byte[] hash = await argon2.GetBytesAsync(32);
             return Convert.ToBase64String(hash);
         }
 
+        /// <summary>
+        /// Verifies password against stored hash
+        /// </summary>
+        /// <param name="enteredPassword"></param>
+        /// <param name="storedHash"></param>
+        /// <param name="salt"></param>
+        /// <returns></returns>
         public static async Task<bool> VerifyPassword(string enteredPassword, string storedHash, byte[] salt)
         {
             string hashOfEnteredPassword = await HashPassword(enteredPassword, salt);

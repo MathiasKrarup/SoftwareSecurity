@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Services
 {
+    /// <summary>
+    /// Service for managing credentials, including adding, updating, deleting
+    /// and retrieving credentials.
+    /// Handles encryption and decryption of the credential data
+    /// </summary>
     public class CredentialService : ICredentialService
     {
         private readonly IEncryptionService _encryptionService;
@@ -24,6 +29,10 @@ namespace SoftwareSecurity.Services
             _encryptionService = encryptionService;
         }
 
+        /// <summary>
+        /// Loads and decrypts the credentials
+        /// </summary>
+        /// <returns></returns>
         private async Task<List<Credential>> LoadCredentialAsync()
         {
             if (File.Exists(_credentialFilePath))
@@ -51,6 +60,11 @@ namespace SoftwareSecurity.Services
             }
         }
 
+        /// <summary>
+        /// Encrypts and saves the credentials to a file
+        /// </summary>
+        /// <param name="credentials"></param>
+        /// <returns></returns>
         private async Task SaveCredentialsAsync(List<Credential> credentials)
         {
             string json = JsonConvert.SerializeObject(credentials);
@@ -68,6 +82,11 @@ namespace SoftwareSecurity.Services
             }
         }
 
+        /// <summary>
+        /// Adds a new credential
+        /// </summary>
+        /// <param name="credential"></param>
+        /// <returns></returns>
         public async Task AddCredentialAsync(Credential credential)
         {
             var credentials = await LoadCredentialAsync();
@@ -91,18 +110,32 @@ namespace SoftwareSecurity.Services
             }
         }
 
+        /// <summary>
+        /// Gets all credentials
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Credential>> GetAllCredentialsAsync()
         {
             var credentials = await LoadCredentialAsync();
             return credentials;
         }
 
+        /// <summary>
+        /// Gets a credential by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Credential> GetCredentialByIdAsync(int id)
         {
             var credentials = await LoadCredentialAsync();
             return credentials.Find(c => c.Id == id);
         }
 
+        /// <summary>
+        /// Updates a credential
+        /// </summary>
+        /// <param name="credential"></param>
+        /// <returns></returns>
         public async Task UpdateCredentialAsync(Credential credential)
         {
             var credentials = await LoadCredentialAsync();

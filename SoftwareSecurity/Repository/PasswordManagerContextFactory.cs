@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace SoftwareSecurity.Repository
 {
+    /// <summary>
+    /// Factory for creating instance of db during design time
+    /// </summary>
     public class PasswordManagerContextFactory : IDesignTimeDbContextFactory<PasswordManagerContext>
     {
         public PasswordManagerContext CreateDbContext(string[] args)
