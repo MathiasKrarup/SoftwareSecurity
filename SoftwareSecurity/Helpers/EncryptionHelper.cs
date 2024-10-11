@@ -29,30 +29,7 @@ namespace SoftwareSecurity.Helpers
             return iv;
         }
 
-        /// <summary>
-        /// Encrypts a plaintext string using AES encryption with a given key and IV
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static (string EncryptedData, byte[] IV) EncryptString(string plainText, byte[] key)
-        {
-            using (var aes = Aes.Create())
-            {
-                aes.Key = key;
-                aes.GenerateIV(); 
-                byte[] iv = aes.IV;
 
-                using var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-                using var ms = new MemoryStream();
-                using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
-                using (var sw = new StreamWriter(cs))
-                {
-                    sw.Write(plainText);
-                }
-                return (Convert.ToBase64String(ms.ToArray()), iv);
-            }
-        }
 
         /// <summary>
         /// Encrypts a plaintext string using AES encryption with a given key and IV

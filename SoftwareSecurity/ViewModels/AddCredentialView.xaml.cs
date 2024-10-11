@@ -95,7 +95,7 @@ namespace SoftwareSecurity
 
         private void GeneratePassword_Click(object sender, RoutedEventArgs e)
         {
-            var generatedPassword = GenerateRandomPassword(10); 
+            var generatedPassword = GenerateRandomPassword(16); 
             PasswordBox.Password = generatedPassword;
             MessageBox.Show("Password generated and set", "Password Generated", MessageBoxButton.OK, MessageBoxImage.Information);
         }
